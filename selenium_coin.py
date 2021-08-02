@@ -2,10 +2,11 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
 import csv
-import pandas as pd
 
 
 coin_name = 'ethereum'
+# bitcoin
+# ethereum
 
 driver = webdriver.Chrome()
 driver.get(f"https://kr.investing.com/crypto/{coin_name}")
@@ -14,7 +15,7 @@ print('----')
 # 팝업창 닫기
 driver.find_element_by_css_selector('.popupCloseIcon.largeBannerCloser').click()
 # 과거 데이터 들어가기
-elem = driver.find_element_by_xpath('//a[@href="/crypto/ethereum/historical-data"]')
+elem = driver.find_element_by_xpath(f'//a[@href="/crypto/{coin_name}/historical-data"]')
 elem.click()
 time.sleep(3)
 # 달력열기
@@ -35,8 +36,9 @@ time.sleep(5)
 table = driver.find_element_by_css_selector('.genTbl.closedTbl.historicalTbl')
 tbody = table.find_element_by_tag_name("tbody")
 rows = tbody.find_elements_by_tag_name("tr")
+rows.reverse()
 print('start')
-f = open(f'{coin_name}/{coin_name}.csv','w', newline='')
+f = open(f'coin/{coin_name}.csv','w', newline='')
 wr = csv.writer(f)
 for index, value in enumerate(rows):
     data = value.find_elements_by_tag_name("td")[0:5]

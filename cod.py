@@ -52,27 +52,30 @@ class CODHelper:
         driver.close()
         return data_list
 
-    # def get_data_yesterday(self):
-    #     driver = webdriver.Chrome()
-    #     driver.get(f"https://kr.investing.com/crypto/{self.coin_name}")
+    def get_data_yesterday(self):
+        driver = webdriver.Chrome()
+        driver.get(f"https://kr.investing.com/crypto/{self.coin_name}")
 
-    #     # 팝업창 닫기
-    #     driver.find_element_by_css_selector('.popupCloseIcon.largeBannerCloser').click()
+        # 팝업창 닫기
+        driver.find_element_by_css_selector('.popupCloseIcon.largeBannerCloser').click()
 
-    #     # 과거 데이터 들어가기
-    #     elem = driver.find_element_by_xpath(f'//a[@href="/crypto/{self.coin_name}/historical-data"]')
-    #     elem.click()
-    #     time.sleep(3)
+        # 과거 데이터 들어가기
+        elem = driver.find_element_by_xpath(f'//a[@href="/crypto/{self.coin_name}/historical-data"]')
+        elem.click()
+        time.sleep(3)
 
-    #     table = driver.find_element_by_css_selector('.genTbl.closedTbl.historicalTbl')
-    #     tbody = table.find_element_by_tag_name("tbody")
-    #     rows = tbody.find_elements_by_tag_name("tr")
-    #     data = rows[1].find_elements_by_tag_name("td")[0:5]
-    #     result = []
-    #     for i in range(5):
-    #         result.append(data[i].text)
-    #     driver.close()
-    #     return result
+        table = driver.find_element_by_css_selector('.genTbl.closedTbl.historicalTbl')
+        tbody = table.find_element_by_tag_name("tbody")
+        rows = tbody.find_elements_by_tag_name("tr")
+        data_list = []
+        for index, value in enumerate(rows):
+            data = value.find_elements_by_tag_name("td")[0:5]
+            sample_list = []
+            for i in range(5):
+                sample_list.append(data[i].text)
+            data_list.append(sample_list)
+        driver.close()
+        return data_list[1]
 
     
     def create_data_csv(self, data):
@@ -85,7 +88,7 @@ class CODHelper:
     def add_data_yesterday(self, data):
         f = open(f'coin/{self.coin_name}.csv','a', newline='')
         wr = csv.writer(f)
-        wr.writerow(data[-1])
+        wr.writerow(data)
         f.close
 
     def __del__(self):

@@ -4,6 +4,10 @@ import time
 import csv
 
 class CODHelper:
+    """
+    셀레니움 크롤링에 필요한 기능들을 제공합니다.
+    
+    """
 
     def __init__(self,coin_name):
         self.coin_name = coin_name
